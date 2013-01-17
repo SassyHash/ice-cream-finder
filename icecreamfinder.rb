@@ -33,7 +33,7 @@ class IceCreamFinder
 
   def select_stores(array_of_stores)
     array_of_stores.each_with_index do |store_details, index|
-      puts "Store #{index+1}: #{store_details[:name]} is located at #{store_details[:address]} with a rating of #{store_details[:rating]}."
+      puts "Store #{index+1}: \t#{store_details[:name]}. \n\t\tLocated at #{store_details[:address]} \n\t\twith a rating of #{store_details[:rating]}.\n"
     end
 
     puts "Which store would you like to get directions to?"
@@ -47,7 +47,6 @@ class IceCreamFinder
     :path => path,
     :query => query_line
     ).to_s
-    p q
     response = JSON.parse(RestClient.get(q))
   end
 
@@ -72,8 +71,8 @@ class IceCreamFinder
   def get_directions(from, destination)
     response = querystring("maps/api/directions/json", "origin=#{from.gsub(" ", "+")}&destination=#{destination.gsub(" ", "+")}&sensor=false")
     response["routes"][0]["legs"][0]["steps"].each_with_index do |step, index|
-      instructions = Nokogiri::HTML(step["html_instructions"]).xpath("//text().to_s")
-      puts "Step #{index+1}: #{instructions} /n #{step["distance"]["text"]}"
+      instructions = Nokogiri::HTML(step["html_instructions"]).xpath("//text()".to_s)
+      puts "Step #{index+1}: #{instructions} \n\t#{step["distance"]["text"]}"
     end
   end
 end
