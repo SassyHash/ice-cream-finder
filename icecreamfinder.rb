@@ -51,11 +51,21 @@ class IceCreamFinder
   end
 
   def get_lat_long(address)
+    # ***
+    # NR Try to avoid super long lines of code like this. A good rule of
+    # thumb is 80 columns or less. Otherwise, the code starts to 
+    # become hard to read
+    # ***
     response = querystring("maps/api/geocode/json", "address=#{address.gsub(" ","+")}&sensor=false")
     [response["results"][0]["geometry"]["location"]["lat"], response["results"][0]["geometry"]["location"]["lng"]]
   end
 
   def search_for_ice_cream(coordinates)
+    # ***
+    # NR I feel like one of the key points of using Accessible and URI is
+    # to avoid long html strings like the one you have in your query :)
+    # I would suggest trying to refactor this part a bit
+    # ***
     response = querystring("maps/api/place/textsearch/json","query=#{"ice cream".gsub(" ","+")}&key=#{GOOGLEAPIKEY}&sensor=false&location=#{coordinates[0]},#{coordinates[1]}&radius=500")
     array_of_stores = []
     response["results"].each do |store_info|
